@@ -6,4 +6,15 @@ This project utilises web-workers in order to provide a real time view of the im
 
 ## Chapter 6 Challenge
 
+Static rendered output.
+![](Chp6Challenge.ppm)
 
+Low resolution gif representing the image being rendered in realtime.
+![](chp6Challenge.gif)
+
+It is suggested to run the project locally for a higher resolution and smoother render output.
+
+### Run project locally
+To run the project locally checkout this repository and run.
+
+```yarn start```
