@@ -1,6 +1,12 @@
-import { ray, position, transform } from './model/ray';
-import { point, vector } from './model';
-import { scaling, translation } from './model/transformation';
+import {
+  point,
+  vector,
+  scaling,
+  translation,
+  ray,
+  position,
+  transform
+} from '.';
 
 describe('rays', () => {
   it('creates a ray', () => {

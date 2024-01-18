@@ -1,6 +1,4 @@
-import { color } from './model/color';
-import { point } from './model/tuple';
-import { pointLight } from './model/light';
+import { color, point, pointLight } from '.';
 
 describe('light', () => {
   it('has a position and intensity', () => {

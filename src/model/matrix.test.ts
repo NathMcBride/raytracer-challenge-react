@@ -10,9 +10,10 @@ import {
   cofactor,
   isInvertible,
   inverse,
-  logMatrix
-} from './model';
-import { tuple, point } from './model/tuple';
+  logMatrix,
+  tuple,
+  point
+} from '.';
 
 describe('matrix', () => {
   it('can construct a 4x4 matrix', () => {

@@ -20,12 +20,15 @@ import {
 
 export const chp6Challenge: Job<BufferedCanvas> = params => {
   const startTime = performance.now();
-  const { data } = params;
+  // const { data } = params;
+  const {
+    data: { width, height, buffer }
+  } = params;
   const ray_origin = point(0, 0, -5);
   const wall_z = 10;
   const wall_size = 7;
   //only catering for canvas equal width and height at the moment
-  const canvas_pixels = data.width;
+  const canvas_pixels = width;
   const pixel_size = wall_size / canvas_pixels;
   const half = wall_size / 2;
 
@@ -45,6 +48,7 @@ export const chp6Challenge: Job<BufferedCanvas> = params => {
       const xs = intersect(shape, r);
 
       const theHit = hit(xs);
+
       if (theHit) {
         const thePoint = position(r, theHit.t);
         const normal = normalAt(theHit.object, thePoint);
@@ -58,7 +62,6 @@ export const chp6Challenge: Job<BufferedCanvas> = params => {
         );
 
         const scaledColor = transformToPPMColor(theColor);
-        const { width, height, buffer } = data;
         writePixelToBuffer({
           buffer,
           x,
@@ -69,7 +72,7 @@ export const chp6Challenge: Job<BufferedCanvas> = params => {
         });
       }
       postMessage({
-        data: { width: data.width, height: data.height, buffer: data.buffer },
+        data: { width, height, buffer },
         status: 'RUNNING'
       });
     }
@@ -82,7 +85,7 @@ export const chp6Challenge: Job<BufferedCanvas> = params => {
     }Seconds>>>>`
   );
   return {
-    data: { width: data.width, height: data.height, buffer: data.buffer },
+    data: { width, height, buffer },
     status: 'SUCCESS'
   };
 };

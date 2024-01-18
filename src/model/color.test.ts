@@ -4,7 +4,7 @@ import {
   subtractColor,
   multiplyByScalar,
   multiplyByColor
-} from './model/color';
+} from '.';
 
 describe('color', () => {
   it('adds colors', () => {

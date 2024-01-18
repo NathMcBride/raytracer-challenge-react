@@ -16,7 +16,7 @@ import {
   isPoint,
   isVector,
   reflect
-} from './model';
+} from '.';
 
 describe('tuple', () => {
   it('is a point when w = 1.0', () => {

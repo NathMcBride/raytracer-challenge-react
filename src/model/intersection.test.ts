@@ -1,5 +1,4 @@
-import { intersection, intersections, hit } from './model/intersection';
-import { sphere } from './model/sphere';
+import { intersection, intersections, hit, sphere } from '.';
 
 describe('intersection', () => {
   it('an intersection encapsulates a t and an object', () => {

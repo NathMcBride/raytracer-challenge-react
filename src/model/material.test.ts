@@ -1,7 +1,13 @@
-import { Material, material, lighting } from './model/material';
-import { color } from './model/color';
-import { point, Point, vector } from './model';
-import { pointLight } from './model/light';
+import {
+  Material,
+  material,
+  lighting,
+  color,
+  point,
+  Point,
+  vector,
+  pointLight
+} from '.';
 
 describe('Material', () => {
   it('has default values', () => {

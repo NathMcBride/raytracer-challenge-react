@@ -1,13 +1,18 @@
-import { sphere, intersect, setTransform, normalAt } from './model/sphere';
-import { ray } from './model/ray';
-import { vector, point, normalize } from './model';
 import {
+  sphere,
+  intersect,
+  setTransform,
+  normalAt,
+  ray,
+  vector,
+  point,
+  normalize,
   identity,
   scaling,
   translation,
-  matrixTransform
-} from './model/transformation';
-import { material } from './model/material';
+  matrixTransform,
+  material
+} from '.';
 
 describe('sphere', () => {
   describe('intersection', () => {

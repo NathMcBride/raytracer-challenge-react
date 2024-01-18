@@ -11,7 +11,7 @@ import {
   multiplyMatrix,
   multiplyByTuple,
   inverse
-} from './model';
+} from '.';
 
 describe('transformation', () => {
   describe('translation', () => {

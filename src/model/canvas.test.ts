@@ -1,5 +1,4 @@
-import { canvas, canvasToPPM, pixelAt, writePixel } from './model/canvas';
-import { color } from './model/color';
+import { canvas, canvasToPPM, pixelAt, writePixel, color } from '.';
 
 describe('canvas', () => {
   it('creates a canvas', () => {

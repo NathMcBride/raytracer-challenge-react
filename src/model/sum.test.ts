@@ -1,4 +1,4 @@
-import { sum } from './model/sum';
+import { sum } from '.';
 
 it('sums numbers', () => {
   expect(sum(1, 2)).toEqual(3);
