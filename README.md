@@ -6,9 +6,6 @@ This project utilises web-workers in order to provide a real time view of the im
 
 ## Chapter 6 Challenge
 
-Static rendered output.
-![](Chp6Challenge.png)
-
 Low resolution gif representing the image being rendered in realtime.
 ![](chp6Challenge.gif)
 
