@@ -20,7 +20,6 @@ import {
 
 export const chp6Challenge: Job<BufferedCanvas> = params => {
   const startTime = performance.now();
-  // const { data } = params;
   const {
     data: { width, height, buffer }
   } = params;
