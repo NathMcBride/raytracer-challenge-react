@@ -3,6 +3,8 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+import 'jest-extended';
+import 'jest-extended/all';
 import { equal } from './model/equal';
 import * as tuple from './model/tuple';
 import * as color from './model/color';
