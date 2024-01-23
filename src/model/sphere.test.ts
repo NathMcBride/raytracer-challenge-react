@@ -106,7 +106,7 @@ describe('sphere', () => {
       const s = sphere();
 
       const m = identity();
-      expect(s.transform).approxEqualM(m);
+      expect(s.transform).toApproxEqualMatrix(m);
     });
 
     it('can change the transformation', () => {
@@ -115,7 +115,7 @@ describe('sphere', () => {
 
       setTransform(s, t);
 
-      expect(s.transform).approxEqualM(t);
+      expect(s.transform).toApproxEqualMatrix(t);
     });
   });
 
@@ -124,21 +124,21 @@ describe('sphere', () => {
       const s = sphere();
       const n = normalAt(s, point(1, 0, 0));
 
-      expect(n).approxEqual(vector(1, 0, 0));
+      expect(n).toApproxEqualTuple(vector(1, 0, 0));
     });
 
     it('calculates the normal on a sphere at point on y axis', () => {
       const s = sphere();
       const n = normalAt(s, point(0, 1, 0));
 
-      expect(n).approxEqual(vector(0, 1, 0));
+      expect(n).toApproxEqualTuple(vector(0, 1, 0));
     });
 
     it('calculates the normal on a sphere at point on z axis', () => {
       const s = sphere();
       const n = normalAt(s, point(0, 0, 1));
 
-      expect(n).approxEqual(vector(0, 0, 1));
+      expect(n).toApproxEqualTuple(vector(0, 0, 1));
     });
 
     it('calculates the normal on a sphere at non-axial point', () => {
@@ -146,7 +146,7 @@ describe('sphere', () => {
       const p = Math.sqrt(3) / 3;
       const n = normalAt(s, point(p, p, p));
 
-      expect(n).approxEqual(vector(p, p, p));
+      expect(n).toApproxEqualTuple(vector(p, p, p));
     });
 
     it('calculates the normal as a normalized vector', () => {
@@ -154,7 +154,7 @@ describe('sphere', () => {
       const p = Math.sqrt(3) / 3;
       const n = normalAt(s, point(p, p, p));
 
-      expect(n).approxEqual(normalize(n));
+      expect(n).toApproxEqualTuple(normalize(n));
     });
 
     it('calculates the normal of a translated sphere', () => {
@@ -162,7 +162,7 @@ describe('sphere', () => {
       setTransform(s, translation(0, 1, 0));
       const n = normalAt(s, point(0, 1.70711, -0.70711));
 
-      expect(n).approxEqual(vector(0, 0.70711, -0.70711));
+      expect(n).toApproxEqualTuple(vector(0, 0.70711, -0.70711));
     });
 
     it('calculates the normal of a transformed sphere', () => {
@@ -174,7 +174,7 @@ describe('sphere', () => {
       setTransform(s, m);
       const n = normalAt(s, point(0, Math.SQRT2 / 2, -Math.SQRT2 / 2));
 
-      expect(n).approxEqual(vector(0, 0.97014, -0.24254));
+      expect(n).toApproxEqualTuple(vector(0, 0.97014, -0.24254));
     });
   });
 

@@ -179,7 +179,9 @@ describe('tuple', () => {
 
     it('normalizes vector(1, 2, 3)', () => {
       const a = vector(1, 2, 3);
-      expect(normalize(a)).approxEqual(vector(0.26726, 0.53452, 0.80178));
+      expect(normalize(a)).toApproxEqualTuple(
+        vector(0.26726, 0.53452, 0.80178)
+      );
     });
 
     it('computes a magnitude of 1', () => {
@@ -215,7 +217,7 @@ describe('tuple', () => {
 
       const r = reflect(v, n);
 
-      expect(r).approxEqual(vector(1, 1, 0));
+      expect(r).toApproxEqualTuple(vector(1, 1, 0));
     });
 
     it('reflects a vector off a slanted surface', () => {
@@ -224,7 +226,7 @@ describe('tuple', () => {
 
       const r = reflect(v, n);
 
-      expect(r).approxEqual(vector(1, 0, 0));
+      expect(r).toApproxEqualTuple(vector(1, 0, 0));
     });
   });
 });

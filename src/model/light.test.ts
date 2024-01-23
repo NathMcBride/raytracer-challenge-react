@@ -6,8 +6,7 @@ describe('light', () => {
     const position = point(0, 0, 0);
 
     const light = pointLight(position, intensity);
-
-    expect(light.position).approxEqual(position);
-    expect(light.intensity).approxEqualC(intensity);
+    expect(light.position).toApproxEqualTuple(position);
+    expect(light.intensity).toApproxEqualColor(intensity);
   });
 });

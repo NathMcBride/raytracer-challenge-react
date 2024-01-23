@@ -13,7 +13,7 @@ describe('Material', () => {
   it('has default values', () => {
     const m = material();
 
-    expect(m.color).approxEqualC(color(1, 1, 1));
+    expect(m.color).toApproxEqualColor(color(1, 1, 1));
     expect(m.ambient).toEqual(0.1);
     expect(m.diffuse).toEqual(0.9);
     expect(m.specular).toEqual(0.9);
@@ -34,7 +34,7 @@ describe('Material', () => {
       const light = pointLight(point(0, 0, -10), color(1, 1, 1));
 
       const result = lighting(m, light, position, eyev, normalv);
-      expect(result).approxEqualC(color(1.9, 1.9, 1.9));
+      expect(result).toApproxEqualColor(color(1.9, 1.9, 1.9));
     });
 
     it('lights with the eye between the light and surface, offset at 45 degrees', () => {
@@ -43,7 +43,7 @@ describe('Material', () => {
       const light = pointLight(point(0, 0, -10), color(1, 1, 1));
 
       const result = lighting(m, light, position, eyev, normalv);
-      expect(result).approxEqualC(color(1.0, 1.0, 1.0));
+      expect(result).toApproxEqualColor(color(1.0, 1.0, 1.0));
     });
 
     it('lights with the eye opposite the surface, light offset at 45 degrees', () => {
@@ -52,7 +52,7 @@ describe('Material', () => {
       const light = pointLight(point(0, 10, -10), color(1, 1, 1));
 
       const result = lighting(m, light, position, eyev, normalv);
-      expect(result).approxEqualC(color(0.7364, 0.7364, 0.7364));
+      expect(result).toApproxEqualColor(color(0.7364, 0.7364, 0.7364));
     });
 
     it('lights with the eye in path of reflection vector', () => {
@@ -61,7 +61,7 @@ describe('Material', () => {
       const light = pointLight(point(0, 10, -10), color(1, 1, 1));
 
       const result = lighting(m, light, position, eyev, normalv);
-      expect(result).approxEqualC(color(1.6364, 1.6364, 1.6364));
+      expect(result).toApproxEqualColor(color(1.6364, 1.6364, 1.6364));
     });
 
     it('lights with light behind the surface', () => {
@@ -70,7 +70,7 @@ describe('Material', () => {
       const light = pointLight(point(0, 0, 10), color(1, 1, 1));
 
       const result = lighting(m, light, position, eyev, normalv);
-      expect(result).approxEqualC(color(0.1, 0.1, 0.1));
+      expect(result).toApproxEqualColor(color(0.1, 0.1, 0.1));
     });
   });
 });

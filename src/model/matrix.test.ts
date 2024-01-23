@@ -390,7 +390,7 @@ describe('matrix', () => {
       expect(b[3][2]).toEqual(-160 / 532);
       expect(cofactor(a, 3, 2)).toEqual(105);
       expect(b[2][3]).toEqual(105 / 532);
-      expect(b).approxEqualM(expected);
+      expect(b).toApproxEqualMatrix(expected);
     });
 
     it('calculates the inverse of another matrix', () => {
@@ -410,7 +410,7 @@ describe('matrix', () => {
         [-0.69231, -0.69231, -0.76923, -1.92308]
       ];
 
-      expect(inverse(a)).approxEqualM(expected);
+      expect(inverse(a)).toApproxEqualMatrix(expected);
     });
 
     it('calculates the inverse of a third matrix', () => {
@@ -430,7 +430,7 @@ describe('matrix', () => {
         [0.17778, 0.06667, -0.26667, 0.33333]
       ];
 
-      expect(inverse(a)).approxEqualM(expected);
+      expect(inverse(a)).toApproxEqualMatrix(expected);
     });
 
     it('multiplies a product by its inverse', () => {
@@ -452,7 +452,7 @@ describe('matrix', () => {
 
       const product = multiplyMatrix(a, b);
 
-      expect(multiplyMatrix(product, inverse(b))).approxEqualM(a);
+      expect(multiplyMatrix(product, inverse(b))).toApproxEqualMatrix(a);
     });
   });
 });

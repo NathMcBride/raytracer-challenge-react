@@ -18,7 +18,7 @@ describe('color', () => {
     const a = color(0.9, 0.6, 0.75);
     const b = color(0.7, 0.1, 0.25);
 
-    expect(subtractColor(a, b)).approxEqualC({
+    expect(subtractColor(a, b)).toApproxEqualColor({
       red: 0.2,
       green: 0.5,
       blue: 0.5
@@ -35,7 +35,7 @@ describe('color', () => {
     const a = color(1, 0.2, 0.4);
     const b = color(0.9, 1, 0.1);
 
-    expect(multiplyByColor(a, b)).approxEqualC({
+    expect(multiplyByColor(a, b)).toApproxEqualColor({
       red: 0.9,
       green: 0.2,
       blue: 0.04
