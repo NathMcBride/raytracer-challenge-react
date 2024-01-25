@@ -1,4 +1,13 @@
-import { Matrix, matrix, multiplyMatrix } from '.';
+import {
+  Matrix,
+  Vector,
+  cross,
+  matrix,
+  multiplyMatrix,
+  normalize,
+  subtract,
+  Point
+} from '.';
 
 export const identity = () => {
   let identity = matrix(4, 4);
@@ -126,4 +135,21 @@ export const matrixTransform = () => {
     m: () => m
   };
   return t;
+};
+
+export const viewTransform = (from: Point, to: Point, up: Vector): Matrix => {
+  const forward = normalize(subtract(to, from));
+  const upn = normalize(up);
+  const left = cross(forward, upn);
+  const trueUp = cross(left, forward);
+
+  const orientation: Matrix = [
+    [left.x, left.y, left.z, 0],
+    [trueUp.x, trueUp.y, trueUp.z, 0],
+    [-forward.x, -forward.y, -forward.z, 0],
+    [0, 0, 0, 1]
+  ];
+  const trans = translation(-from.x, -from.y, -from.z);
+
+  return multiplyMatrix(orientation, trans);
 };

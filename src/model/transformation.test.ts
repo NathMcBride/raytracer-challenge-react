@@ -10,7 +10,10 @@ import {
   vector,
   multiplyMatrix,
   multiplyByTuple,
-  inverse
+  inverse,
+  identity,
+  Matrix,
+  viewTransform
 } from '.';
 
 describe('transformation', () => {
@@ -204,5 +207,53 @@ describe('transformation', () => {
       .m();
 
     expect(multiplyByTuple(t, p)).toApproxEqualTuple(point(15, 0, 7));
+  });
+
+  describe('view transformation', () => {
+    it('returns the identity matrix default orientation', () => {
+      const from = point(0, 0, 0);
+      const to = point(0, 0, -1);
+      const up = vector(0, 1, 0);
+
+      const transform = viewTransform(from, to, up);
+
+      expect(transform).toApproxEqualMatrix(identity());
+    });
+
+    it('returns a matrix looking in the positive z direction', () => {
+      const from = point(0, 0, 0);
+      const to = point(0, 0, 1);
+      const up = vector(0, 1, 0);
+
+      const transform = viewTransform(from, to, up);
+
+      expect(transform).toApproxEqualMatrix(scaling(-1, 1, -1));
+    });
+
+    it('moves the world', () => {
+      const from = point(0, 0, 8);
+      const to = point(0, 0, 0);
+      const up = vector(0, 1, 0);
+
+      const transform = viewTransform(from, to, up);
+
+      expect(transform).toApproxEqualMatrix(translation(0, 0, -8));
+    });
+
+    it('produces the expected transform for arbitrary values', () => {
+      const expectedMatrix: Matrix = [
+        [-0.50709, 0.50709, 0.67612, -2.36643],
+        [0.76772, 0.60609, 0.12122, -2.82843],
+        [-0.35857, 0.59761, -0.71714, 0.0],
+        [0.0, 0.0, 0.0, 1.0]
+      ];
+      const from = point(1, 3, 2);
+      const to = point(4, -2, 8);
+      const up = vector(1, 1, 0);
+
+      const transform = viewTransform(from, to, up);
+
+      expect(transform).toApproxEqualMatrix(expectedMatrix);
+    });
   });
 });
