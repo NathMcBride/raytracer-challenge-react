@@ -31,12 +31,14 @@
     "eyev",
     "hadmard",
     "hadmardproduct",
+    "hsize",
     "invertibility",
     "isoworker",
     "normalv",
     "raytracer",
     "sinr",
-    "submatrix"
+    "submatrix",
+    "vsize"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "javascript.preferences.importModuleSpecifier": "relative",

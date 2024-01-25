@@ -86,7 +86,23 @@ function toApproxEqualMatrix(
   };
 }
 
-expect.extend({ toApproxEqualTuple, toApproxEqualColor, toApproxEqualMatrix });
+function toApproxEqualNumber(
+  this: MatcherState,
+  received: number,
+  expected: number
+) {
+  return {
+    pass: equal(received, expected),
+    message: () => `Received: "${received}" Expected: "${expected}"`
+  };
+}
+
+expect.extend({
+  toApproxEqualTuple,
+  toApproxEqualColor,
+  toApproxEqualMatrix,
+  toApproxEqualNumber
+});
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -95,6 +111,7 @@ declare global {
       toApproxEqualTuple(expected: tuple.Tuple): R;
       toApproxEqualColor(expected: color.Color): R;
       toApproxEqualMatrix(expected: Matrix): R;
+      toApproxEqualNumber(expected: number): R;
     }
   }
 }

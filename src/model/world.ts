@@ -22,7 +22,7 @@ import {
   prepareComputations
 } from '.';
 
-type World = { objects: Shape[]; lightSources: PointLight[] };
+export type World = { objects: Shape[]; lightSources: PointLight[] };
 
 export const world = (): World => {
   return { objects: [], lightSources: [] };
