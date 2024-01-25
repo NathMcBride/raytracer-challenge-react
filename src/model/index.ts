@@ -30,3 +30,4 @@ export * from './transpose';
 export * from './tuple';
 export * from './vector';
 export * from './workerDeps';
+export * from './world';

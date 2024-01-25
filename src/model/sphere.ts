@@ -19,10 +19,12 @@ import {
   sphereOrigin
 } from '.';
 
-export type Sphere = Shape; // & { id: string };
-export const sphere = (): Sphere => ({
-  transform: identity(),
-  material: material()
+export type Sphere = Shape;
+export type SphereParams = Partial<Sphere>;
+export const sphere = (params?: SphereParams, b?: number): Sphere => ({
+  origin: params?.origin ?? point(0, 0, 0),
+  transform: params?.transform ?? identity(),
+  material: params?.material ?? material()
 });
 
 //function below is a bit pointless?

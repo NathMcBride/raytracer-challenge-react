@@ -1,4 +1,13 @@
-import { intersection, intersections, hit, sphere } from '.';
+import {
+  intersection,
+  intersections,
+  hit,
+  sphere,
+  ray,
+  point,
+  vector,
+  prepareComputations
+} from '.';
 
 describe('intersection', () => {
   it('an intersection encapsulates a t and an object', () => {
@@ -61,6 +70,45 @@ describe('intersection', () => {
       const xs = intersections(i1, i2, i3, i4);
 
       expect(hit(xs)).toEqual(i4);
+    });
+  });
+
+  describe('precomputing the state of an intersection', () => {
+    it('returns the expected values', () => {
+      const theRay = ray(point(0, 0, -5), vector(0, 0, 1));
+      const shape = sphere();
+      const theIntersection = intersection(4, shape);
+
+      const comps = prepareComputations(theIntersection, theRay);
+
+      expect(comps.t).toEqual(theIntersection.t);
+      expect(comps.object).toEqual(shape);
+      expect(comps.point).toEqual(point(0, 0, -1));
+      expect(comps.eyev).toEqual(vector(0, 0, -1));
+      expect(comps.normalv).toEqual(vector(0, 0, -1));
+    });
+
+    it('sets inside as false, when an intersection occurs on the outside', () => {
+      const theRay = ray(point(0, 0, -5), vector(0, 0, 1));
+      const shape = sphere();
+      const theIntersection = intersection(4, shape);
+
+      const comps = prepareComputations(theIntersection, theRay);
+
+      expect(comps.inside).toBeFalse();
+    });
+
+    it('sets inside as true, when an intersection occurs on the inside', () => {
+      const theRay = ray(point(0, 0, 0), vector(0, 0, 1));
+      const shape = sphere();
+      const theIntersection = intersection(1, shape);
+
+      const comps = prepareComputations(theIntersection, theRay);
+
+      expect(comps.point).toEqual(point(0, 0, 1));
+      expect(comps.eyev).toEqual(vector(0, 0, -1));
+      expect(comps.normalv).toEqual(vector(0, 0, -1));
+      expect(comps.inside).toBeTrue();
     });
   });
 });
