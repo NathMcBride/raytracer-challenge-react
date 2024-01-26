@@ -17,9 +17,7 @@ import {
   Computation,
   Color,
   lighting,
-  addColor,
-  hit,
-  prepareComputations
+  addColor
 } from '.';
 
 export type World = { objects: Shape[]; lightSources: PointLight[] };
@@ -37,6 +35,7 @@ export const defaultWorld = (): World => ({
         specular: 0.2
       })
     }),
+    sphere({ transform: scaling(0.5, 0.5, 0.5) }),
     sphere({ transform: scaling(0.5, 0.5, 0.5) })
   ],
   lightSources: [pointLight(point(-10, 10, -10), color(1, 1, 1))]
@@ -57,7 +56,8 @@ export const intersectWorld = (world: World, ray: Ray): Array<Intersection> => {
       const c = dot(objectToRay, objectToRay) - 1;
 
       const discriminant = Math.pow(b, 2) - 4 * a * c;
-      if (discriminant < 0) return [];
+      // if (discriminant < 0) return [];
+      if (discriminant < 0) continue;
 
       const dSqrt = Math.sqrt(discriminant);
       const aMultiple = 2 * a;
@@ -99,13 +99,4 @@ export const shadeHit = (world: World, computation: Computation): Color => {
   }
 
   return accumulatedColor;
-};
-
-export const colorAt = (world: World, ray: Ray): Color => {
-  const intersections = intersectWorld(world, ray);
-  const theHit = hit(intersections);
-
-  if (!theHit) return color(0, 0, 0);
-  const computation = prepareComputations(theHit, ray);
-  return shadeHit(world, computation);
 };

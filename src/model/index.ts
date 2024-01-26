@@ -1,6 +1,8 @@
 export * from './camera';
 export * from './canvas';
+export * from './chp7WorkerDeps';
 export * from './color';
+export * from './colorAt';
 export * from './determinate';
 export * from './equal';
 export * from './hadmardproduct';
@@ -19,6 +21,7 @@ export * from './minor';
 export * from './multiplyMatrix';
 export * from './ray';
 export * from './reflect';
+export * from './scene';
 export * from './sphere';
 export * from './sphereOrigin';
 export * from './subMatrix';

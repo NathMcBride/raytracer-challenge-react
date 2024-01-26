@@ -20,6 +20,7 @@ export const Canvas = (props: {
 
     context.fillStyle = '#61cc1e';
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+    context.imageSmoothingEnabled = false;
     setCtx(context);
   }, []);
 
