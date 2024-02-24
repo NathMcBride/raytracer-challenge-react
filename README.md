@@ -13,9 +13,13 @@ Low resolution gif representing the image being rendered in realtime.
 
 It is suggested to run the project locally for a higher resolution and smoother render output.
 
-## Chapter 7 Challenge
+## Chapter 7 Challenge - implement scene
 
 ![](Chp7Challenge.png)
+
+## Chapter 8 Challenge - implement shadows
+
+![](Chp8Challenge.png)
 
 ### Running the project locally
 To run the project locally checkout this repository and from the command line run.

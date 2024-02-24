@@ -7,7 +7,9 @@ import {
   position,
   negate,
   normalAt,
-  dot
+  dot,
+  add,
+  multiply
 } from '.';
 
 export type Shape = {
@@ -44,29 +46,33 @@ export type Computation = {
   eyev: Vector;
   normalv: Vector;
   inside: boolean;
+  overPoint: Point;
 };
 
 export const prepareComputations = (
   intersection: Intersection,
   ray: Ray
 ): Computation => {
+  const EPSILON = 0.00001;
   const point = position(ray, intersection.t);
   const eyev = negate(ray.direction);
   let normalv = normalAt(intersection.object, point);
   let inside = false;
-  const dotProduct = dot(normalv, eyev);
 
+  const dotProduct = dot(normalv, eyev);
   if (dotProduct < 0) {
     inside = true;
     normalv = negate(normalv);
   }
 
+  const overPoint = add(point, multiply(normalv, EPSILON));
   return {
     t: intersection.t,
     object: intersection.object,
     point,
     eyev,
     normalv,
-    inside
+    inside,
+    overPoint
   };
 };

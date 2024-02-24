@@ -6,7 +6,9 @@ import {
   ray,
   point,
   vector,
-  prepareComputations
+  prepareComputations,
+  translation,
+  EPSILON
 } from '.';
 
 describe('intersection', () => {
@@ -109,6 +111,18 @@ describe('intersection', () => {
       expect(comps.eyev).toEqual(vector(0, 0, -1));
       expect(comps.normalv).toEqual(vector(0, 0, -1));
       expect(comps.inside).toBeTrue();
+    });
+
+    it('offsets the point', () => {
+      const theRay = ray(point(0, 0, -5), vector(0, 0, 1));
+      const shape = sphere();
+      shape.transform = translation(0, 0, 1);
+
+      const theIntersection = intersection(5, shape);
+      const comps = prepareComputations(theIntersection, theRay);
+
+      expect(comps.overPoint.z).toBeLessThan(-EPSILON / 2);
+      expect(comps.point.z).toBeGreaterThan(comps.overPoint.z);
     });
   });
 });

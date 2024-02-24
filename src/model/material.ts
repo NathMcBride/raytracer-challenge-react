@@ -36,7 +36,8 @@ export const lighting = (
   light: PointLight,
   point: Point,
   eyev: Vector,
-  normalv: Vector
+  normalv: Vector,
+  inShadow: boolean
 ): Color => {
   const effectiveColor = multiplyByColor(material.color, light.intensity);
   const lightv = normalize(subtract(light.position, point));
@@ -66,6 +67,8 @@ export const lighting = (
       specular = multiplyByScalar(light.intensity, material.specular * factor);
     }
   }
+
+  if (inShadow) return ambient;
 
   return addColor(addColor(ambient, diffuse), specular);
 };

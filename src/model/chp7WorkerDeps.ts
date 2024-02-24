@@ -55,6 +55,7 @@ export const chp7WorkerDeps = () => [
   deps.transformToPPMColor,
   deps.intersectWorld,
   deps.prepareComputations,
+  deps.isShadowed,
   deps.shadeHit,
   deps.colorAt,
   deps.rayForPixel

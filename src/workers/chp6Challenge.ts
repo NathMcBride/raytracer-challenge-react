@@ -57,7 +57,8 @@ export const chp6Challenge: Job<BufferedCanvas> = params => {
           light,
           thePoint,
           eye,
-          normal
+          normal,
+          false
         );
 
         const scaledColor = transformToPPMColor(theColor);

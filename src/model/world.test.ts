@@ -10,10 +10,12 @@ import {
   ray,
   vector,
   intersectWorld,
-  intersection,
   prepareComputations,
   shadeHit,
-  colorAt
+  colorAt,
+  isShadowed,
+  translation,
+  intersection
 } from '.';
 
 describe('world', () => {
@@ -121,6 +123,62 @@ describe('world', () => {
       const theColor = colorAt(theWorld, theRay);
 
       expect(theColor).toApproxEqualColor(theWorld.objects[1].material.color);
+    });
+  });
+
+  describe('shadows', () => {
+    it('does not detect a shadow when nothing is colinear with point and light', () => {
+      const theWorld = defaultWorld();
+      const thePoint = point(0, 0, -5);
+
+      const shadowed = isShadowed(theWorld, thePoint);
+
+      expect(shadowed).toBeFalse();
+    });
+
+    it('detects a shadow when an object is between the point and light', () => {
+      const theWorld = defaultWorld();
+      const thePoint = point(10, -10, 10);
+
+      const shadowed = isShadowed(theWorld, thePoint);
+
+      expect(shadowed).toBeTrue();
+    });
+
+    it('no shadow when an object is behind the light', () => {
+      const theWorld = defaultWorld();
+      const thePoint = point(-20, 20, -20);
+
+      const shadowed = isShadowed(theWorld, thePoint);
+
+      expect(shadowed).toBeFalse();
+    });
+
+    it('no shadow when an object is behind the point', () => {
+      const theWorld = defaultWorld();
+      const thePoint = point(-2, 2, -2);
+
+      const shadowed = isShadowed(theWorld, thePoint);
+
+      expect(shadowed).toBeFalse();
+    });
+
+    it('shades a shadow when given an intersection in shadow', () => {
+      const theWorld = world();
+      const light = pointLight(point(0, 0, -10), color(1, 1, 1));
+      const sphere1 = sphere();
+      const sphere2 = sphere();
+      sphere2.transform = translation(0, 0, 10);
+
+      theWorld.lightSources = [light];
+      theWorld.objects = [sphere1, sphere2];
+
+      const theRay = ray(point(0, 0, 5), vector(0, 0, 1));
+      const theIntersection = intersection(4, sphere2);
+      const comps = prepareComputations(theIntersection, theRay);
+      const shadedColor = shadeHit(theWorld, comps);
+
+      expect(shadedColor).toApproxEqualColor(color(0.1, 0.1, 0.1));
     });
   });
 });

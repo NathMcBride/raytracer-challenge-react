@@ -17,7 +17,8 @@ import {
   Computation,
   Color,
   lighting,
-  addColor
+  addColor,
+  isShadowed
 } from '.';
 
 export type World = { objects: Shape[]; lightSources: PointLight[] };
@@ -35,7 +36,6 @@ export const defaultWorld = (): World => ({
         specular: 0.2
       })
     }),
-    sphere({ transform: scaling(0.5, 0.5, 0.5) }),
     sphere({ transform: scaling(0.5, 0.5, 0.5) })
   ],
   lightSources: [pointLight(point(-10, 10, -10), color(1, 1, 1))]
@@ -83,18 +83,19 @@ export const intersectWorld = (world: World, ray: Ray): Array<Intersection> => {
 export const shadeHit = (world: World, computation: Computation): Color => {
   const {
     object: { material },
-    point,
+    overPoint,
     eyev,
     normalv
   } = computation;
   let accumulatedColor = color(0, 0, 0);
-  const length = world.lightSources.length;
 
+  const shadowed = isShadowed(world, overPoint);
+  const length = world.lightSources.length;
   for (let i = 0; i < length; i++) {
     const lightSource = world.lightSources[i];
     accumulatedColor = addColor(
       accumulatedColor,
-      lighting(material, lightSource, point, eyev, normalv)
+      lighting(material, lightSource, overPoint, eyev, normalv, shadowed)
     );
   }
 

@@ -23,6 +23,8 @@ describe('Material', () => {
   describe('lighting', () => {
     let m: Material;
     let position: Point;
+    const inShadow = false;
+
     beforeEach(() => {
       m = material();
       position = point(0, 0, 0);
@@ -33,7 +35,7 @@ describe('Material', () => {
       const normalv = vector(0, 0, -1);
       const light = pointLight(point(0, 0, -10), color(1, 1, 1));
 
-      const result = lighting(m, light, position, eyev, normalv);
+      const result = lighting(m, light, position, eyev, normalv, inShadow);
       expect(result).toApproxEqualColor(color(1.9, 1.9, 1.9));
     });
 
@@ -42,7 +44,7 @@ describe('Material', () => {
       const normalv = vector(0, 0, -1);
       const light = pointLight(point(0, 0, -10), color(1, 1, 1));
 
-      const result = lighting(m, light, position, eyev, normalv);
+      const result = lighting(m, light, position, eyev, normalv, inShadow);
       expect(result).toApproxEqualColor(color(1.0, 1.0, 1.0));
     });
 
@@ -51,7 +53,7 @@ describe('Material', () => {
       const normalv = vector(0, 0, -1);
       const light = pointLight(point(0, 10, -10), color(1, 1, 1));
 
-      const result = lighting(m, light, position, eyev, normalv);
+      const result = lighting(m, light, position, eyev, normalv, inShadow);
       expect(result).toApproxEqualColor(color(0.7364, 0.7364, 0.7364));
     });
 
@@ -60,7 +62,7 @@ describe('Material', () => {
       const normalv = vector(0, 0, -1);
       const light = pointLight(point(0, 10, -10), color(1, 1, 1));
 
-      const result = lighting(m, light, position, eyev, normalv);
+      const result = lighting(m, light, position, eyev, normalv, inShadow);
       expect(result).toApproxEqualColor(color(1.6364, 1.6364, 1.6364));
     });
 
@@ -69,7 +71,17 @@ describe('Material', () => {
       const normalv = vector(0, 0, -1);
       const light = pointLight(point(0, 0, 10), color(1, 1, 1));
 
-      const result = lighting(m, light, position, eyev, normalv);
+      const result = lighting(m, light, position, eyev, normalv, inShadow);
+      expect(result).toApproxEqualColor(color(0.1, 0.1, 0.1));
+    });
+
+    it('lights the surface when in shadow', () => {
+      const eyev = vector(0, 0, -1);
+      const normalv = vector(0, 0, -1);
+      const light = pointLight(point(0, 0, -10), color(1, 1, 1));
+      const inShadow = true;
+
+      const result = lighting(m, light, position, eyev, normalv, inShadow);
       expect(result).toApproxEqualColor(color(0.1, 0.1, 0.1));
     });
   });

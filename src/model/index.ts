@@ -22,6 +22,7 @@ export * from './multiplyMatrix';
 export * from './ray';
 export * from './reflect';
 export * from './scene';
+export * from './shadow';
 export * from './sphere';
 export * from './sphereOrigin';
 export * from './subMatrix';
