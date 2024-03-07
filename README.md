@@ -4,6 +4,8 @@ A software rendered Ray Tracer implementation built and tested following Test Dr
 
 This project utilises Web-workers in order to provide a real time view of the image being rendered. The worker is created and managed via a custom React hook. Which takes as arguments a function to run, and a list of dependencies for said function. This avoids the need to create a separate Java script file for the worker and allows for the importation of external functions.
 
+As of this writing the dependency used to generate the Web-worker body (isoworker 0.2.4) does not recognise unary arrow functions. However it does recognise unary functions declared using the function keyword. Because of this, functions which are intended to be used as Web-worker dependencies will be declared using the function keyword where needed.
+
 In order to achieve an animated/procedural view of the scene being rendered the function provided to the hook takes as an argument a ```Uint8ClampedArray``` which is a view upon a ```SharedArrayBuffer```. This provides a fast way to communicate with the main thread and avoids expensive copy operations.
 
 ## Chapter 6 Challenge

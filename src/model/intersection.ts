@@ -12,11 +12,17 @@ import {
   multiply
 } from '.';
 
-export type Shape = {
+export type Identity = {
+  kind: 'identity';
   origin: Point;
   transform: Matrix;
   material: Material;
 };
+
+export type Sphere = { kind: 'sphere' } & Omit<Identity, 'kind'>;
+
+export type Shape = Identity | Sphere;
+
 export type Intersection = { t: number; object: Shape };
 
 export const intersection = (t: number, object: Shape): Intersection => ({

@@ -56,7 +56,6 @@ export const intersectWorld = (world: World, ray: Ray): Array<Intersection> => {
       const c = dot(objectToRay, objectToRay) - 1;
 
       const discriminant = Math.pow(b, 2) - 4 * a * c;
-      // if (discriminant < 0) return [];
       if (discriminant < 0) continue;
 
       const dSqrt = Math.sqrt(discriminant);
