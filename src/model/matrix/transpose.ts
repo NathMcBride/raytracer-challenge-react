@@ -1,6 +1,6 @@
 import { Matrix, matrix } from '..';
 
-export const transpose = (a: Matrix, b?: number): Matrix => {
+export function transpose(a: Matrix): Matrix {
   const m = matrix(a.length, a[0].length);
 
   for (let row = 0; row < a.length; row++) {
@@ -9,4 +9,4 @@ export const transpose = (a: Matrix, b?: number): Matrix => {
     }
   }
   return m;
-};
+}

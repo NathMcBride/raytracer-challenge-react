@@ -31,16 +31,20 @@ export const multiplyByScalar = (a: Color, scalar: number): Color => ({
 export const multiplyByColor = (a: Color, b: Color): Color =>
   hadmardProduct(a, b);
 
-export const clampColor = (color: Color, b?: number): Color => ({
-  red: min(max(color.red)),
-  green: min(max(color.green)),
-  blue: min(max(color.blue))
-});
+export function clampColor(color: Color): Color {
+  return {
+    red: min(max(color.red)),
+    green: min(max(color.green)),
+    blue: min(max(color.blue))
+  };
+}
 
-export const round = (color: Color, b?: number): Color => ({
-  red: Math.round(color.red),
-  green: Math.round(color.green),
-  blue: Math.round(color.blue)
-});
+export function round(color: Color): Color {
+  return {
+    red: Math.round(color.red),
+    green: Math.round(color.green),
+    blue: Math.round(color.blue)
+  };
+}
 
 export const black = color(0, 0, 0);

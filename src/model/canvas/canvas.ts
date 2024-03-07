@@ -60,7 +60,7 @@ type PixelToBufferArgs = {
   width: number;
   height: number;
 };
-export const writePixelToBuffer = (args: PixelToBufferArgs, b?: number) => {
+export function writePixelToBuffer(args: PixelToBufferArgs) {
   const { x, y, color, width, height, buffer: data } = args;
   const index = (x + y * width) * 4;
 
@@ -76,7 +76,7 @@ export const writePixelToBuffer = (args: PixelToBufferArgs, b?: number) => {
   data[index + 1] = color.green;
   data[index + 2] = color.blue;
   data[index + 3] = opaque;
-};
+}
 
 export const pixelAt = (canvas: Canvas, x: number, y: number): Color => {
   const { width, buffer: data } = canvas;

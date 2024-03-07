@@ -13,12 +13,14 @@ import {
 } from '..';
 
 export type SphereParams = Partial<Sphere>;
-export const sphere = (params?: SphereParams, b?: number): Sphere => ({
-  kind: 'sphere',
-  origin: params?.origin ?? point(0, 0, 0),
-  transform: params?.transform ?? identity(),
-  material: params?.material ?? material()
-});
+export function sphere(params?: SphereParams): Sphere {
+  return {
+    kind: 'sphere',
+    origin: params?.origin ?? point(0, 0, 0),
+    transform: params?.transform ?? identity(),
+    material: params?.material ?? material()
+  };
+}
 
 //function below is a bit pointless?
 export const setTransform = (s: Sphere, m: Matrix) => {

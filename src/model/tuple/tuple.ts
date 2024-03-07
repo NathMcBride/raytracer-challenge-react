@@ -4,7 +4,9 @@ export type Point = Tuple & { w: 1.0 };
 export type Vector = Tuple & { w: 0.0 };
 
 export const isPoint = (a: Tuple): a is Point => a.w === 1.0;
-export const isVector = (a: Tuple, b?: number): a is Vector => a.w === 0.0;
+export function isVector(a: Tuple): a is Vector {
+  return a.w === 0.0;
+}
 
 export const tuple = (x: number, y: number, z: number, w: number): Tuple => ({
   x,

@@ -36,14 +36,11 @@ export const intersections = (
   return [...intersection].sort((a, b) => a.t - b.t);
 };
 
-export const hit = (
-  intersections: Array<Intersection>,
-  b?: number
-): Intersection | null => {
+export function hit(intersections: Array<Intersection>): Intersection | null {
   const nonNegative = (intersection: Intersection) => intersection.t > 0;
   const filtered = intersections.filter(nonNegative);
   return filtered.length > 0 ? filtered[0] : null;
-};
+}
 
 export type Computation = {
   t: number;

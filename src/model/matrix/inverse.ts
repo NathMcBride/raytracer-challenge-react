@@ -1,5 +1,5 @@
 import { Matrix, matrix, isInvertible, determinate, cofactor } from '..';
-export const inverse = (a: Matrix, b?: number): Matrix => {
+export function inverse(a: Matrix): Matrix {
   if (!isInvertible(a)) {
     //maybe return null?
     throw new Error('Matrix not invertible');
@@ -16,4 +16,4 @@ export const inverse = (a: Matrix, b?: number): Matrix => {
   }
 
   return m;
-};
+}

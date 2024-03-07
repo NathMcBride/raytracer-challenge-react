@@ -23,13 +23,15 @@ export type Material = {
 };
 
 export type MaterialParams = Partial<Material>;
-export const material = (params?: MaterialParams, b?: number): Material => ({
-  color: params?.color ?? color(1, 1, 1),
-  ambient: params?.ambient ?? 0.1,
-  diffuse: params?.diffuse ?? 0.9,
-  specular: params?.specular ?? 0.9,
-  shininess: params?.shininess ?? 200.0
-});
+export function material(params?: MaterialParams): Material {
+  return {
+    color: params?.color ?? color(1, 1, 1),
+    ambient: params?.ambient ?? 0.1,
+    diffuse: params?.diffuse ?? 0.9,
+    specular: params?.specular ?? 0.9,
+    shininess: params?.shininess ?? 200.0
+  };
+}
 
 export const lighting = (
   material: Material,

@@ -1,3 +1,4 @@
 import { Matrix, determinate } from '..';
-export const isInvertible = (a: Matrix, b?: number): boolean =>
-  determinate(a) !== 0;
+export function isInvertible(a: Matrix): boolean {
+  return determinate(a) !== 0;
+}

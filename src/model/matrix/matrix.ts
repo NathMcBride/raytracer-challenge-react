@@ -41,8 +41,9 @@ export function multiplyByTuple(a: Matrix, b: Tuple): Tuple {
   return toTuple(multiplyMatrix(a, toMatrix(b)));
 }
 
-export const deepClone = (a: Matrix, b?: number): Matrix =>
-  a.map(row => row.slice());
+export function deepClone(a: Matrix): Matrix {
+  return a.map(row => row.slice());
+}
 
 export const cofactor = (a: Matrix, row: number, column: number): number => {
   const isOdd = (a: number): boolean => a % 2 !== 0;
