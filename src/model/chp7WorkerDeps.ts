@@ -2,6 +2,7 @@ import * as deps from '.';
 //Can not use comments in the deps array below
 //it will break the code generation in isoworker
 export const chp7WorkerDeps = () => [
+  deps.determinate,
   deps.addColor,
   deps.transpose,
   deps.add,
@@ -32,7 +33,6 @@ export const chp7WorkerDeps = () => [
   deps.submatrix,
   deps.minor,
   deps.cofactor,
-  deps.determinate,
   deps.inverse,
   deps.multiplyByTuple,
   deps.transform,
