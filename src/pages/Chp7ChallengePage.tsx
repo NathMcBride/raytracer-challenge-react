@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { chp7Challenge, Scene } from '../workers';
 import { useWorker } from '../hooks/useWorker';
 import { chp7WorkerDeps } from '../model';
-import { chp7Scene } from '../scenes/chp7Scene';
+import { chp7Scene, chp9Scene } from '../scenes';
 import { Canvas } from '../components/Canvas';
 const width = 500;
 const height = 500;
@@ -19,7 +19,7 @@ export const Chp7ChallengePage = () => {
       Uint8ClampedArray.BYTES_PER_ELEMENT * elementCount
     );
     const uint8View = new Uint8ClampedArray(sharedArrayBuffer).fill(0);
-    const scene = chp7Scene(500, 250);
+    const scene = chp9Scene(500, 250);
 
     startWorker({
       data: {

@@ -5,7 +5,8 @@ import {
   inverse,
   Shape,
   switchUnionValue,
-  intersectSphere
+  intersectSphere,
+  intersectPlane
 } from '..';
 
 export const intersect = (shape: Shape, ray: Ray): Array<Intersection> => {
@@ -13,6 +14,7 @@ export const intersect = (shape: Shape, ray: Ray): Array<Intersection> => {
 
   return switchUnionValue(shape)({
     identity: () => [],
-    sphere: b => intersectSphere(b, localRay)
+    sphere: b => intersectSphere(b, localRay),
+    plane: p => intersectPlane(p, localRay)
   });
 };

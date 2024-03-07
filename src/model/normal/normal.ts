@@ -17,7 +17,8 @@ export const normalAt = (shape: Shape, worldPoint: Point): Vector => {
 
   const objectNormal = switchUnionValue(shape)({
     identity: () => vector(0, 0, 0),
-    sphere: b => subtract(objectPoint, b.origin)
+    sphere: b => subtract(objectPoint, b.origin),
+    plane: () => vector(0, 1, 0)
   });
 
   const worldNormal = multiplyByTuple(

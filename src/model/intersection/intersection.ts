@@ -1,6 +1,5 @@
 import {
-  Matrix,
-  Material,
+  Shape,
   Point,
   Vector,
   Ray,
@@ -11,17 +10,6 @@ import {
   add,
   multiply
 } from '..';
-
-export type Identity = {
-  kind: 'identity';
-  origin: Point;
-  transform: Matrix;
-  material: Material;
-};
-
-export type Sphere = { kind: 'sphere' } & Omit<Identity, 'kind'>;
-
-export type Shape = Identity | Sphere;
 
 export type Intersection = { t: number; object: Shape };
 

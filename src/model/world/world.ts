@@ -10,15 +10,15 @@ import {
   Ray,
   Intersection,
   transform,
-  dot,
   inverse,
-  isVector,
-  subtract,
   Computation,
   Color,
   lighting,
   addColor,
-  isShadowed
+  isShadowed,
+  switchUnionValue,
+  intersectSphere,
+  intersectPlane
 } from '..';
 
 export type World = { objects: Shape[]; lightSources: PointLight[] };
@@ -42,38 +42,20 @@ export const defaultWorld = (): World => ({
 });
 
 export const intersectWorld = (world: World, ray: Ray): Array<Intersection> => {
-  const result: Array<Intersection> = [];
+  let result: Array<Intersection> = [];
   const length = world.objects.length;
 
   for (let i = 0; i < length; i++) {
     const currentObject = world.objects[i];
-    const ray2 = transform(ray, inverse(currentObject.transform));
-    const objectToRay = subtract(ray2.origin, currentObject.origin);
+    const localRay = transform(ray, inverse(currentObject.transform));
 
-    if (isVector(objectToRay)) {
-      const a = dot(ray2.direction, ray2.direction);
-      const b = 2 * dot(ray2.direction, objectToRay);
-      const c = dot(objectToRay, objectToRay) - 1;
+    const intersections = switchUnionValue(currentObject)({
+      identity: () => [],
+      sphere: b => intersectSphere(b, localRay),
+      plane: p => intersectPlane(p, localRay)
+    });
 
-      const discriminant = Math.pow(b, 2) - 4 * a * c;
-      if (discriminant < 0) continue;
-
-      const dSqrt = Math.sqrt(discriminant);
-      const aMultiple = 2 * a;
-      const t1 = (-b - dSqrt) / aMultiple;
-      const t2 = (-b + dSqrt) / aMultiple;
-
-      result.push(
-        {
-          t: t1,
-          object: currentObject
-        },
-        {
-          t: t2,
-          object: currentObject
-        }
-      );
-    }
+    result = result.concat(intersections);
   }
 
   return result.sort((a, b) => a.t - b.t);

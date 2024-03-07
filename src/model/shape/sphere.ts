@@ -8,7 +8,6 @@ import {
   Matrix,
   identity,
   material,
-  sphereOrigin,
   Sphere
 } from '..';
 
@@ -32,7 +31,7 @@ export const intersectSphere = (
   sphere: Sphere,
   ray: Ray
 ): Array<Intersection> => {
-  const sphereToRay = subtract(ray.origin, sphereOrigin());
+  const sphereToRay = subtract(ray.origin, sphere.origin);
 
   if (isVector(sphereToRay)) {
     const a = dot(ray.direction, ray.direction);

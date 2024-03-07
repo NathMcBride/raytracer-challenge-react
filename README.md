@@ -23,6 +23,10 @@ It is suggested to run the project locally for a higher resolution and smoother 
 
 ![](Chp8Challenge.png)
 
+## Chapter 9 Challenge - implement planes
+
+![](Chp9Challenge.png)
+
 ### Running the project locally
 To run the project locally checkout this repository and from the command line run.
 
