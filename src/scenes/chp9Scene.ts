@@ -12,7 +12,14 @@ import {
   point,
   camera,
   vector,
-  viewTransform
+  viewTransform,
+  stripePattern,
+  ringPattern,
+  rotationY,
+  gradientPattern,
+  rotationZ,
+  rotationX,
+  checkerPattern
 } from '../model';
 
 export const chp9Scene = (
@@ -23,13 +30,18 @@ export const chp9Scene = (
 
   const floor = plane();
   floor.material = material();
+  floor.material.pattern = checkerPattern(color(1, 1, 1), color(0, 0, 0));
   floor.material.color = color(1, 0.9, 0.9);
   floor.material.specular = 0;
 
   const middle = sphere();
   middle.transform = translation(-0.5, 1, 0.5);
   middle.material = material();
-  middle.material.color = color(0.1, 1, 0.5);
+  middle.material.pattern = stripePattern(color(0, 0, 0), color(1, 1, 1));
+  middle.material.pattern.transform = multiplyMatrix(
+    rotationZ((-45 * Math.PI) / 180),
+    scaling(0.1, 0.1, 0.1)
+  );
   middle.material.diffuse = 0.7;
   middle.material.specular = 0.3;
 
@@ -39,7 +51,11 @@ export const chp9Scene = (
     scaling(0.5, 0.5, 0.5)
   );
   right.material = material();
-  right.material.color = color(0.5, 1, 0.1);
+  right.material.pattern = ringPattern(color(1, 1, 0), color(0, 0, 1));
+  right.material.pattern.transform = multiplyMatrix(
+    scaling(0.05, 0.05, 0.05),
+    rotationX((-45 * Math.PI) / 180)
+  );
   right.material.diffuse = 0.7;
   right.material.specular = 0.3;
 
@@ -49,7 +65,11 @@ export const chp9Scene = (
     scaling(0.33, 0.33, 0.33)
   );
   left.material = material();
-  left.material.color = color(1, 0.8, 0.1);
+  left.material.pattern = gradientPattern(color(1, 0, 0), color(0, 0, 1));
+  left.material.pattern.transform = multiplyMatrix(
+    translation(1, 0, 0),
+    scaling(2, 2, 2)
+  );
   left.material.diffuse = 0.7;
   left.material.specular = 0.3;
 

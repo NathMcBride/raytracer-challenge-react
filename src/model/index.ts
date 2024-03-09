@@ -8,6 +8,7 @@ export * from './light';
 export * from './material';
 export * from './matrix';
 export * from './normal';
+export * from './patterns';
 export * from './ray';
 export * from './shape';
 export * from './tuple';

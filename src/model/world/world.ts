@@ -62,12 +62,8 @@ export const intersectWorld = (world: World, ray: Ray): Array<Intersection> => {
 };
 
 export const shadeHit = (world: World, computation: Computation): Color => {
-  const {
-    object: { material },
-    overPoint,
-    eyev,
-    normalv
-  } = computation;
+  const { object, overPoint, eyev, normalv } = computation;
+  const { material } = object;
   let accumulatedColor = color(0, 0, 0);
 
   const shadowed = isShadowed(world, overPoint);
@@ -76,7 +72,15 @@ export const shadeHit = (world: World, computation: Computation): Color => {
     const lightSource = world.lightSources[i];
     accumulatedColor = addColor(
       accumulatedColor,
-      lighting(material, lightSource, overPoint, eyev, normalv, shadowed)
+      lighting(
+        material,
+        object,
+        lightSource,
+        overPoint,
+        eyev,
+        normalv,
+        shadowed
+      )
     );
   }
 

@@ -6,7 +6,9 @@ import {
   point,
   Point,
   vector,
-  pointLight
+  pointLight,
+  stripePattern,
+  sphere
 } from '..';
 
 describe('Material', () => {
@@ -24,6 +26,7 @@ describe('Material', () => {
     let m: Material;
     let position: Point;
     const inShadow = false;
+    const object = sphere();
 
     beforeEach(() => {
       m = material();
@@ -35,7 +38,15 @@ describe('Material', () => {
       const normalv = vector(0, 0, -1);
       const light = pointLight(point(0, 0, -10), color(1, 1, 1));
 
-      const result = lighting(m, light, position, eyev, normalv, inShadow);
+      const result = lighting(
+        m,
+        object,
+        light,
+        position,
+        eyev,
+        normalv,
+        inShadow
+      );
       expect(result).toApproxEqualColor(color(1.9, 1.9, 1.9));
     });
 
@@ -44,7 +55,15 @@ describe('Material', () => {
       const normalv = vector(0, 0, -1);
       const light = pointLight(point(0, 0, -10), color(1, 1, 1));
 
-      const result = lighting(m, light, position, eyev, normalv, inShadow);
+      const result = lighting(
+        m,
+        object,
+        light,
+        position,
+        eyev,
+        normalv,
+        inShadow
+      );
       expect(result).toApproxEqualColor(color(1.0, 1.0, 1.0));
     });
 
@@ -53,7 +72,15 @@ describe('Material', () => {
       const normalv = vector(0, 0, -1);
       const light = pointLight(point(0, 10, -10), color(1, 1, 1));
 
-      const result = lighting(m, light, position, eyev, normalv, inShadow);
+      const result = lighting(
+        m,
+        object,
+        light,
+        position,
+        eyev,
+        normalv,
+        inShadow
+      );
       expect(result).toApproxEqualColor(color(0.7364, 0.7364, 0.7364));
     });
 
@@ -62,7 +89,15 @@ describe('Material', () => {
       const normalv = vector(0, 0, -1);
       const light = pointLight(point(0, 10, -10), color(1, 1, 1));
 
-      const result = lighting(m, light, position, eyev, normalv, inShadow);
+      const result = lighting(
+        m,
+        object,
+        light,
+        position,
+        eyev,
+        normalv,
+        inShadow
+      );
       expect(result).toApproxEqualColor(color(1.6364, 1.6364, 1.6364));
     });
 
@@ -71,7 +106,15 @@ describe('Material', () => {
       const normalv = vector(0, 0, -1);
       const light = pointLight(point(0, 0, 10), color(1, 1, 1));
 
-      const result = lighting(m, light, position, eyev, normalv, inShadow);
+      const result = lighting(
+        m,
+        object,
+        light,
+        position,
+        eyev,
+        normalv,
+        inShadow
+      );
       expect(result).toApproxEqualColor(color(0.1, 0.1, 0.1));
     });
 
@@ -81,8 +124,49 @@ describe('Material', () => {
       const light = pointLight(point(0, 0, -10), color(1, 1, 1));
       const inShadow = true;
 
-      const result = lighting(m, light, position, eyev, normalv, inShadow);
+      const result = lighting(
+        m,
+        object,
+        light,
+        position,
+        eyev,
+        normalv,
+        inShadow
+      );
       expect(result).toApproxEqualColor(color(0.1, 0.1, 0.1));
+    });
+
+    it('lights with a pattern applied', () => {
+      m.pattern = stripePattern(color(1, 1, 1), color(0, 0, 0));
+      m.ambient = 1;
+      m.diffuse = 0;
+      m.specular = 0;
+
+      const eyev = vector(0, 0, -1);
+      const normalv = vector(0, 0, -1);
+      const light = pointLight(point(0, 0, -10), color(1, 1, 1));
+
+      const c1 = lighting(
+        m,
+        object,
+        light,
+        point(0.9, 0, 0),
+        eyev,
+        normalv,
+        inShadow
+      );
+      const c2 = lighting(
+        m,
+        object,
+        light,
+        point(1.1, 0, 0),
+        eyev,
+        normalv,
+        inShadow
+      );
+
+      expect(c1).toApproxEqualColor(color(1, 1, 1));
+      expect(c2).toApproxEqualColor(color(0, 0, 0));
     });
   });
 });

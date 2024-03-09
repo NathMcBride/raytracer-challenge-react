@@ -27,6 +27,10 @@ It is suggested to run the project locally for a higher resolution and smoother 
 
 ![](Chp9Challenge.png)
 
+## Chapter 10 Challenge - implement patterns
+
+![](Chp10Challenge.png)
+
 ### Running the project locally
 To run the project locally checkout this repository and from the command line run.
 

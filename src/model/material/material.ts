@@ -11,11 +11,15 @@ import {
   subtract,
   dot,
   reflect,
-  negate
+  negate,
+  Pattern,
+  patternAtShape,
+  Shape
 } from '..';
 
 export type Material = {
   color: Color;
+  pattern?: Pattern;
   ambient: number;
   diffuse: number;
   specular: number;
@@ -35,13 +39,20 @@ export function material(params?: MaterialParams): Material {
 
 export const lighting = (
   material: Material,
+  object: Shape,
   light: PointLight,
   point: Point,
   eyev: Vector,
   normalv: Vector,
   inShadow: boolean
 ): Color => {
-  const effectiveColor = multiplyByColor(material.color, light.intensity);
+  let theColor: Color = material.color;
+
+  if (material.pattern) {
+    theColor = patternAtShape(material.pattern, object, point);
+  }
+
+  const effectiveColor = multiplyByColor(theColor, light.intensity);
   const lightv = normalize(subtract(light.position, point));
   const ambient = multiplyByScalar(effectiveColor, material.ambient);
   const lightDotNormal = dot(lightv, normalv);

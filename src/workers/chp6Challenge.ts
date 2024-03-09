@@ -54,6 +54,7 @@ export const chp6Challenge: Job<BufferedCanvas> = params => {
         const eye = negate(r.direction);
         const theColor = lighting(
           theHit.object.material,
+          shape,
           light,
           thePoint,
           eye,
