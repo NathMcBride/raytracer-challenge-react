@@ -1,16 +1,5 @@
-import { Matrix, matrix, multiplyMatrix } from '..';
+import { Matrix, multiplyMatrix, identity } from '..';
 import { Vector, cross, normalize, subtract, Point } from '..';
-
-export const identity = () => {
-  let identity = matrix(4, 4);
-  identity = [
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 1, 0],
-    [0, 0, 0, 1]
-  ];
-  return identity;
-};
 
 export const translation = (x: number, y: number, z: number): Matrix => {
   const m = identity();
@@ -30,7 +19,7 @@ export const scaling = (x: number, y: number, z: number): Matrix => {
   return m;
 };
 
-export const rotationX = (radians: number): Matrix => {
+export function rotationX(radians: number): Matrix {
   const m = identity();
   const cosr = Math.cos(radians);
   const sinr = Math.sin(radians);
@@ -41,9 +30,9 @@ export const rotationX = (radians: number): Matrix => {
   m[2][2] = cosr;
 
   return m;
-};
+}
 
-export const rotationY = (radians: number): Matrix => {
+export function rotationY(radians: number): Matrix {
   const m = identity();
   const cosr = Math.cos(radians);
   const sinr = Math.sin(radians);
@@ -54,9 +43,9 @@ export const rotationY = (radians: number): Matrix => {
   m[2][2] = cosr;
 
   return m;
-};
+}
 
-export const rotationZ = (radians: number): Matrix => {
+export function rotationZ(radians: number): Matrix {
   const m = identity();
   const cosr = Math.cos(radians);
   const sinr = Math.sin(radians);
@@ -67,7 +56,7 @@ export const rotationZ = (radians: number): Matrix => {
   m[1][1] = cosr;
 
   return m;
-};
+}
 
 export const shearing = (
   xy: number,

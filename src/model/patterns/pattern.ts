@@ -1,17 +1,13 @@
 import {
   Color,
   Point,
-  switchUnionValue,
   Matrix,
   identity,
   Shape,
   color,
   inverse,
   multiplyByTuple,
-  stripeAt,
-  gradientAt,
-  ringAt,
-  checkerAt
+  matchPattern
 } from '..';
 
 export type PatternIdentity = {
@@ -25,36 +21,61 @@ export type Stripe = { kind: 'stripe' } & Omit<PatternIdentity, 'kind'>;
 export type Gradient = { kind: 'gradient' } & Omit<PatternIdentity, 'kind'>;
 export type Ring = { kind: 'ring' } & Omit<PatternIdentity, 'kind'>;
 export type Checker = { kind: 'checker' } & Omit<PatternIdentity, 'kind'>;
+export type Glow = { kind: 'glow' } & Omit<PatternIdentity, 'kind'>;
+export type RingGradient = { kind: 'ringGradient' } & Omit<
+  PatternIdentity,
+  'kind'
+>;
 
-export type Pattern = PatternIdentity | Stripe | Gradient | Ring | Checker;
+export type Pattern =
+  | PatternIdentity
+  | Stripe
+  | Gradient
+  | Ring
+  | RingGradient
+  | Checker
+  | Glow;
 
-export const stripePattern = (a: Color, b: Color): Stripe => ({
-  kind: 'stripe',
+const patternFragment = (
+  a: Color,
+  b: Color
+): Omit<PatternIdentity, 'kind'> => ({
   a,
   b,
   transform: identity()
+});
+
+export const stripePattern = (a: Color, b: Color): Stripe => ({
+  kind: 'stripe',
+  ...patternFragment(a, b)
 });
 
 export const gradientPattern = (a: Color, b: Color): Gradient => ({
   kind: 'gradient',
-  a,
-  b,
-  transform: identity()
+  ...patternFragment(a, b)
 });
 
 export const checkerPattern = (a: Color, b: Color): Checker => ({
   kind: 'checker',
-  a,
-  b,
-  transform: identity()
+  ...patternFragment(a, b)
 });
 
 export const ringPattern = (a: Color, b: Color): Ring => ({
   kind: 'ring',
-  a,
-  b,
-  transform: identity()
+  ...patternFragment(a, b)
 });
+
+export const ringGradientPattern = (a: Color, b: Color): RingGradient => ({
+  kind: 'ringGradient',
+  ...patternFragment(a, b)
+});
+
+export function radialGlowPattern(a: Color): Glow {
+  return {
+    kind: 'glow',
+    ...patternFragment(a, color(0, 0, 0))
+  };
+}
 
 export const patternAtShape = (
   pattern: Pattern,
@@ -64,11 +85,11 @@ export const patternAtShape = (
   const objectPoint = multiplyByTuple(inverse(shape.transform), worldPoint);
   const patternPoint = multiplyByTuple(inverse(pattern.transform), objectPoint);
 
-  return switchUnionValue(pattern)({
-    identity: () => color(0, 0, 0),
-    stripe: s => stripeAt(s, patternPoint),
-    gradient: g => gradientAt(g, patternPoint),
-    ring: r => ringAt(r, patternPoint),
-    checker: c => checkerAt(c, patternPoint)
-  });
+  return matchPattern(pattern, patternPoint);
+};
+
+export const patternAtPoint = (pattern: Pattern, uvPoint: Point): Color => {
+  const patternPoint = multiplyByTuple(inverse(pattern.transform), uvPoint);
+
+  return matchPattern(pattern, patternPoint);
 };

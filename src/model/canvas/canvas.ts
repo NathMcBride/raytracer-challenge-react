@@ -89,8 +89,9 @@ export const pixelAt = (canvas: Canvas, x: number, y: number): Color => {
   return { red, green, blue };
 };
 
-export const transformToPPMColor = (color: Color, b?: number): Color =>
-  round(clampColor(multiplyByScalar(color, 255)));
+export function transformToPPMColor(color: Color): Color {
+  return round(clampColor(multiplyByScalar(color, 255)));
+}
 
 const MAX_PPM_LINE_LENGTH = 70;
 const maxLength = (line: string): boolean => line.length >= MAX_PPM_LINE_LENGTH;

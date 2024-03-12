@@ -2,6 +2,10 @@ import * as deps from '.';
 //Can not use comments in the deps array below
 //it will break the code generation in isoworker
 export const chp7WorkerDeps = () => [
+  deps.identity,
+  deps.rotationZ,
+  deps.rotationY,
+  deps.rotationX,
   deps.determinate,
   deps.addColor,
   deps.transpose,
@@ -59,7 +63,15 @@ export const chp7WorkerDeps = () => [
   deps.ringAt,
   deps.checkerPattern,
   deps.checkerAt,
+  deps.ringGradientPattern,
+  deps.ringGradientAt,
   deps.patternAtShape,
+  deps.patternAtPoint,
+  deps.radialGlowPattern,
+  deps.smoothStep,
+  deps.clamp,
+  deps.radialGlowAtPoint,
+  deps.matchPattern,
   deps.lighting,
   deps.min,
   deps.max,

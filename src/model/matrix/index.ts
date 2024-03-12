@@ -1,4 +1,5 @@
 export * from './determinate';
+export * from './identity';
 export * from './inverse';
 export * from './isInvertible';
 export * from './matrix';
