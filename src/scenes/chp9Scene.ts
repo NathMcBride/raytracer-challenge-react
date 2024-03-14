@@ -13,9 +13,7 @@ import {
   camera,
   vector,
   viewTransform,
-  stripePattern,
   gradientPattern,
-  rotationZ,
   checkerPattern
 } from '../model';
 
@@ -30,17 +28,14 @@ export const chp9Scene = (
   floor.material.pattern = checkerPattern(color(1, 1, 1), color(0, 0, 0));
   floor.material.color = color(1, 0.9, 0.9);
   floor.material.specular = 0;
+  floor.material.reflective = 0.5;
 
   const middle = sphere();
   middle.transform = translation(-0.5, 1, 0.5);
   middle.material = material();
-  middle.material.pattern = stripePattern(color(0, 0, 0), color(1, 1, 1));
-  middle.material.pattern.transform = multiplyMatrix(
-    rotationZ((-45 * Math.PI) / 180),
-    scaling(0.1, 0.1, 0.1)
-  );
-  middle.material.diffuse = 0.7;
-  middle.material.specular = 0.3;
+  middle.material.color = color(1, 0, 0);
+  middle.material.shininess = 1600;
+  middle.material.reflective = 1;
 
   const right = sphere();
   right.transform = multiplyMatrix(
@@ -65,6 +60,7 @@ export const chp9Scene = (
   );
   left.material.diffuse = 0.7;
   left.material.specular = 0.3;
+  left.material.ambient = 0.5;
 
   const light = pointLight(point(-10, 10, -10), color(1, 1, 1));
 

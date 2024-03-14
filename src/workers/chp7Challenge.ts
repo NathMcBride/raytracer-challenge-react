@@ -22,7 +22,7 @@ export const chp7Challenge: Job<Scene> = params => {
   for (let y = 0; y < vsize - 1; y++) {
     for (let x = 0; x < hsize - 1; x++) {
       const ray = rayForPixel(camera, x, y);
-      const color = colorAt(world, ray);
+      const color = colorAt(world, ray, 5);
 
       const scaledColor = transformToPPMColor(color);
       writePixelToBuffer({

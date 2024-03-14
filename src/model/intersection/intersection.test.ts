@@ -8,7 +8,8 @@ import {
   vector,
   prepareComputations,
   translation,
-  EPSILON
+  EPSILON,
+  plane
 } from '..';
 
 describe('intersection', () => {
@@ -123,6 +124,22 @@ describe('intersection', () => {
 
       expect(comps.overPoint.z).toBeLessThan(-EPSILON / 2);
       expect(comps.point.z).toBeGreaterThan(comps.overPoint.z);
+    });
+  });
+
+  describe('reflection', () => {
+    it('pre-computes the reflection vector', () => {
+      const shape = plane();
+      const r = ray(
+        point(0, 1, -1),
+        vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2)
+      );
+      const i = intersection(Math.sqrt(2), shape);
+      const comps = prepareComputations(i, r);
+
+      expect(comps.reflectv).toApproxEqualTuple(
+        vector(0, Math.sqrt(2) / 2, Math.sqrt(2) / 2)
+      );
     });
   });
 });

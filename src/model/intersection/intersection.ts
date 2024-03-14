@@ -8,7 +8,8 @@ import {
   normalAt,
   dot,
   add,
-  multiply
+  multiply,
+  reflect
 } from '..';
 
 export type Intersection = { t: number; object: Shape };
@@ -38,6 +39,7 @@ export type Computation = {
   normalv: Vector;
   inside: boolean;
   overPoint: Point;
+  reflectv: Vector;
 };
 
 export const prepareComputations = (
@@ -57,6 +59,7 @@ export const prepareComputations = (
   }
 
   const overPoint = add(point, multiply(normalv, EPSILON));
+  const reflectv = reflect(ray.direction, normalv);
   return {
     t: intersection.t,
     object: intersection.object,
@@ -64,6 +67,7 @@ export const prepareComputations = (
     eyev,
     normalv,
     inside,
-    overPoint
+    overPoint,
+    reflectv
   };
 };

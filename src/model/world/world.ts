@@ -18,7 +18,8 @@ import {
   isShadowed,
   switchUnionValue,
   intersectSphere,
-  intersectPlane
+  intersectPlane,
+  reflectedColor
 } from '..';
 
 export type World = { objects: Shape[]; lightSources: PointLight[] };
@@ -61,7 +62,11 @@ export const intersectWorld = (world: World, ray: Ray): Array<Intersection> => {
   return result.sort((a, b) => a.t - b.t);
 };
 
-export const shadeHit = (world: World, computation: Computation): Color => {
+export const shadeHit = (
+  world: World,
+  computation: Computation,
+  remaining: number
+): Color => {
   const { object, overPoint, eyev, normalv } = computation;
   const { material } = object;
   let accumulatedColor = color(0, 0, 0);
@@ -84,5 +89,6 @@ export const shadeHit = (world: World, computation: Computation): Color => {
     );
   }
 
-  return accumulatedColor;
+  const reflected = reflectedColor(world, computation, remaining);
+  return addColor(accumulatedColor, reflected);
 };

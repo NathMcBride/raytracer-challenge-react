@@ -2,6 +2,7 @@ import * as deps from '.';
 //Can not use comments in the deps array below
 //it will break the code generation in isoworker
 export const chp7WorkerDeps = () => [
+  deps.reflectedColor,
   deps.identity,
   deps.rotationZ,
   deps.rotationY,

@@ -80,7 +80,7 @@ export const render = (camera: Camera, world: World): Canvas => {
   for (let y = 0; y < vsize - 1; y++) {
     for (let x = 0; x < hsize - 1; x++) {
       const ray = rayForPixel(camera, x, y);
-      const color = colorAt(world, ray);
+      const color = colorAt(world, ray, 5);
       writePixel(theCanvas, x, y, color);
     }
   }

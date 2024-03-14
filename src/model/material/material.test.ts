@@ -20,6 +20,7 @@ describe('Material', () => {
     expect(m.diffuse).toEqual(0.9);
     expect(m.specular).toEqual(0.9);
     expect(m.shininess).toEqual(200.0);
+    expect(m.reflective).toEqual(0);
   });
 
   describe('lighting', () => {

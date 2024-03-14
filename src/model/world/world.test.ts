@@ -15,7 +15,9 @@ import {
   colorAt,
   isShadowed,
   translation,
-  intersection
+  intersection,
+  reflectedColor,
+  plane
 } from '..';
 
 describe('world', () => {
@@ -76,7 +78,7 @@ describe('world', () => {
       const theIntersection = intersection(4, shape);
       const computations = prepareComputations(theIntersection, theRay);
 
-      const colorAtHit = shadeHit(theWorld, computations);
+      const colorAtHit = shadeHit(theWorld, computations, 1);
 
       expect(colorAtHit).toApproxEqualColor(color(0.38066, 0.47583, 0.2855));
     });
@@ -89,9 +91,27 @@ describe('world', () => {
       const theIntersection = intersection(0.5, shape);
       const computations = prepareComputations(theIntersection, theRay);
 
-      const colorAtHit = shadeHit(theWorld, computations);
+      const colorAtHit = shadeHit(theWorld, computations, 1);
 
       expect(colorAtHit).toApproxEqualColor(color(0.90498, 0.90498, 0.90498));
+    });
+
+    it('shades a reflective material', () => {
+      const theWorld = defaultWorld();
+      const shape = plane();
+      shape.material.reflective = 0.5;
+      shape.transform = translation(0, -1, 0);
+      theWorld.objects.push(shape);
+      const r = ray(
+        point(0, 0, -3),
+        vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2)
+      );
+      const i = intersection(Math.sqrt(2), shape);
+      const comps = prepareComputations(i, r);
+
+      const theColor = shadeHit(theWorld, comps, 1);
+
+      expect(theColor).toApproxEqualColor(color(0.87675, 0.92434, 0.82917));
     });
   });
 
@@ -100,7 +120,7 @@ describe('world', () => {
       const theWorld = defaultWorld();
       const theRay = ray(point(0, 0, -5), vector(0, 1, 0));
 
-      const theColor = colorAt(theWorld, theRay);
+      const theColor = colorAt(theWorld, theRay, 1);
 
       expect(theColor).toEqual(color(0, 0, 0));
     });
@@ -109,7 +129,7 @@ describe('world', () => {
       const theWorld = defaultWorld();
       const theRay = ray(point(0, 0, -5), vector(0, 0, 1));
 
-      const theColor = colorAt(theWorld, theRay);
+      const theColor = colorAt(theWorld, theRay, 1);
 
       expect(theColor).toApproxEqualColor(color(0.38066, 0.47583, 0.2855));
     });
@@ -120,9 +140,27 @@ describe('world', () => {
       theWorld.objects[1].material.ambient = 1;
       const theRay = ray(point(0, 0, 0.75), vector(0, 0, -1));
 
-      const theColor = colorAt(theWorld, theRay);
+      const theColor = colorAt(theWorld, theRay, 1);
 
       expect(theColor).toApproxEqualColor(theWorld.objects[1].material.color);
+    });
+
+    it('limits recursion of mutually reflective surfaces', () => {
+      const theWorld = world();
+      theWorld.lightSources = [pointLight(point(0, 0, 0), color(1, 1, 1))];
+      const lower = plane();
+      lower.material.reflective = 1;
+      lower.transform = translation(0, -1, 0);
+      theWorld.objects.push(lower);
+
+      const upper = plane();
+      upper.material.reflective = 1;
+      upper.transform = translation(0, 1, 0);
+      theWorld.objects.push(upper);
+
+      const r = ray(point(0, 0, 0), vector(0, 1, 0));
+      const theColor = colorAt(theWorld, r, 5);
+      expect(theColor).toApproxEqualColor(color(11.4, 11.4, 11.4));
     });
   });
 
@@ -176,9 +214,58 @@ describe('world', () => {
       const theRay = ray(point(0, 0, 5), vector(0, 0, 1));
       const theIntersection = intersection(4, sphere2);
       const comps = prepareComputations(theIntersection, theRay);
-      const shadedColor = shadeHit(theWorld, comps);
+      const shadedColor = shadeHit(theWorld, comps, 1);
 
       expect(shadedColor).toApproxEqualColor(color(0.1, 0.1, 0.1));
+    });
+  });
+
+  describe('reflection', () => {
+    it('calculates the reflected color for a non-reflective material', () => {
+      const theWorld = defaultWorld();
+      const r = ray(point(0, 0, 0), vector(0, 0, 1));
+      theWorld.objects[1].material.ambient = 1;
+      const i = intersection(1, theWorld.objects[1]);
+      const comps = prepareComputations(i, r);
+
+      const theColor = reflectedColor(theWorld, comps, 1);
+      expect(theColor).toApproxEqualColor(color(0, 0, 0));
+    });
+
+    it('calculates the reflected color for a reflective material', () => {
+      const theWorld = defaultWorld();
+      const shape = plane();
+      shape.material.reflective = 0.5;
+      shape.transform = translation(0, -1, 0);
+      theWorld.objects.push(shape);
+      const r = ray(
+        point(0, 0, -3),
+        vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2)
+      );
+      const i = intersection(Math.sqrt(2), shape);
+      const comps = prepareComputations(i, r);
+
+      const theColor = reflectedColor(theWorld, comps, 1);
+
+      expect(theColor).toApproxEqualColor(color(0.190332, 0.23791, 0.142741));
+    });
+
+    it('calculates the color for the maximum recursive depth', () => {
+      const theWorld = defaultWorld();
+      const shape = plane();
+      shape.material.reflective = 0.5;
+      shape.transform = translation(0, -1, 0);
+      theWorld.objects.push(shape);
+      const r = ray(
+        point(0, 0, -3),
+        vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2)
+      );
+      const i = intersection(Math.sqrt(2), shape);
+      const comps = prepareComputations(i, r);
+
+      const theColor = reflectedColor(theWorld, comps, 0);
+
+      expect(theColor).toApproxEqualColor(color(0, 0, 0));
     });
   });
 });
