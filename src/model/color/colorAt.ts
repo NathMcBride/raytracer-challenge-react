@@ -14,6 +14,6 @@ export const colorAt = (world: World, ray: Ray, remaining: number): Color => {
   const theHit = hit(intersections);
 
   if (!theHit) return color(0, 0, 0);
-  const computation = prepareComputations(theHit, ray);
+  const computation = prepareComputations(theHit, ray, intersections);
   return shadeHit(world, computation, remaining);
 };

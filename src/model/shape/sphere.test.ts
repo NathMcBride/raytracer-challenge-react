@@ -11,10 +11,18 @@ import {
   scaling,
   translation,
   matrixTransform,
-  material
+  material,
+  glassSphere
 } from '..';
 
 describe('sphere', () => {
+  it('creates a sphere with glassy material', () => {
+    const s = glassSphere();
+    expect(s.transform).toApproxEqualMatrix(identity());
+    expect(s.material.transparency).toEqual(1);
+    expect(s.material.refractiveIndex).toEqual(1.5);
+  });
+
   describe('intersection', () => {
     it('intersects a ray at two points', () => {
       const r = ray(point(0, 0, -5), vector(0, 0, 1));

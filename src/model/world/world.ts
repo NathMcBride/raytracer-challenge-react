@@ -19,7 +19,10 @@ import {
   switchUnionValue,
   intersectSphere,
   intersectPlane,
-  reflectedColor
+  reflectedColor,
+  refractedColor,
+  schlick,
+  multiplyByScalar
 } from '..';
 
 export type World = { objects: Shape[]; lightSources: PointLight[] };
@@ -28,16 +31,17 @@ export const world = (): World => {
   return { objects: [], lightSources: [] };
 };
 
-export const defaultWorld = (): World => ({
+export const defaultWorld = (uuid1 = '1234', uuid2 = '4321'): World => ({
   objects: [
     sphere({
+      uuid: uuid1,
       material: material({
         color: color(0.8, 1.0, 0.6),
         diffuse: 0.7,
         specular: 0.2
       })
     }),
-    sphere({ transform: scaling(0.5, 0.5, 0.5) })
+    sphere({ uuid: uuid2, transform: scaling(0.5, 0.5, 0.5) })
   ],
   lightSources: [pointLight(point(-10, 10, -10), color(1, 1, 1))]
 });
@@ -90,5 +94,15 @@ export const shadeHit = (
   }
 
   const reflected = reflectedColor(world, computation, remaining);
-  return addColor(accumulatedColor, reflected);
+  const refracted = refractedColor(world, computation, remaining);
+
+  if (material.reflective > 0 && material.transparency > 0) {
+    const reflectance = schlick(computation);
+    return addColor(
+      addColor(accumulatedColor, multiplyByScalar(reflected, reflectance)),
+      multiplyByScalar(refracted, 1 - reflectance)
+    );
+  }
+
+  return addColor(addColor(accumulatedColor, reflected), refracted);
 };

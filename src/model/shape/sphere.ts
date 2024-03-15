@@ -8,16 +8,32 @@ import {
   Matrix,
   identity,
   material,
-  Sphere
+  Sphere,
+  uuidv4
 } from '..';
 
 export type SphereParams = Partial<Sphere>;
 export function sphere(params?: SphereParams): Sphere {
   return {
     kind: 'sphere',
+    uuid: params?.uuid ?? uuidv4(),
     origin: params?.origin ?? point(0, 0, 0),
     transform: params?.transform ?? identity(),
     material: params?.material ?? material()
+  };
+}
+
+export function glassSphere(params?: SphereParams): Sphere {
+  return {
+    kind: 'sphere',
+    uuid: params?.uuid ?? uuidv4(),
+    origin: params?.origin ?? point(0, 0, 0),
+    transform: params?.transform ?? identity(),
+    material: params?.material ?? {
+      ...material(),
+      transparency: 1,
+      refractiveIndex: 1.5
+    }
   };
 }
 
@@ -47,8 +63,8 @@ export const intersectSphere = (
     const t2 = (-b + dSqrt) / aMultiple;
 
     return [
-      { t: t1, object: sphere },
-      { t: t2, object: sphere }
+      { uuid: uuidv4(), t: t1, object: sphere },
+      { uuid: uuidv4(), t: t2, object: sphere }
     ].sort((a, b) => a.t - b.t);
   }
 

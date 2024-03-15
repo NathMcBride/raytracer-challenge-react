@@ -13,7 +13,7 @@ import {
 
 export const matchPattern = (pattern: Pattern, point: Point) => {
   return switchUnionValue(pattern)({
-    identity: () => color(0, 0, 0),
+    identity: () => color(point.x, point.y, point.z),
     stripe: s => stripeAt(s, point),
     gradient: g => gradientAt(g, point),
     ring: r => ringAt(r, point),

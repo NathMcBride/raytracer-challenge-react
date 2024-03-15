@@ -115,3 +115,6 @@ declare global {
     }
   }
 }
+
+//Make sure jest/node uses the correct crypto module
+if (!('crypto' in globalThis)) globalThis.crypto = require('crypto');

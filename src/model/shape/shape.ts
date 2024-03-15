@@ -2,6 +2,7 @@ import { Point, Matrix, Material } from '..';
 
 export type Identity = {
   kind: 'identity';
+  uuid: string;
   origin: Point;
   transform: Matrix;
   material: Material;

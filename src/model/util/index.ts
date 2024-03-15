@@ -6,3 +6,4 @@ export * from './minmax';
 export * from './smoothStep';
 export * from './sum';
 export * from './switchUnionValue';
+export * from './uuidV4';

@@ -1,5 +1,5 @@
 import { Point, Vector, Tuple } from '..';
-export function subtract(a: Point, b: Vector): Vector;
+export function subtract(a: Point, b: Vector): Point;
 export function subtract(a: Point, b: Point): Vector;
 export function subtract(a: Vector, b: Vector): Vector;
 export function subtract(a: Vector, b: Tuple): Tuple;

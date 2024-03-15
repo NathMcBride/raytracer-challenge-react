@@ -36,6 +36,8 @@ export const chp9Scene = (
   middle.material.color = color(1, 0, 0);
   middle.material.shininess = 1600;
   middle.material.reflective = 1;
+  middle.material.transparency = 1;
+  middle.material.refractiveIndex = 1.5;
 
   const right = sphere();
   right.transform = multiplyMatrix(
@@ -43,9 +45,14 @@ export const chp9Scene = (
     scaling(0.5, 0.5, 0.5)
   );
   right.material = material();
-  right.material.color = color(0.5, 1, 0.1);
+  right.material.color = color(0.066, 0.11, 0.42);
   right.material.diffuse = 0.7;
-  right.material.specular = 0.3;
+  right.material.ambient = 0.6;
+  right.material.specular = 1;
+  middle.material.shininess = 1600;
+  right.material.transparency = 1;
+  right.material.reflective = 0.5;
+  right.material.refractiveIndex = 1.5;
 
   const left = sphere();
   left.transform = multiplyMatrix(

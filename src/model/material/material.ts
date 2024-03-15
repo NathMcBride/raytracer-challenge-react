@@ -25,6 +25,8 @@ export type Material = {
   specular: number;
   shininess: number;
   reflective: number;
+  transparency: number;
+  refractiveIndex: number;
 };
 
 export type MaterialParams = Partial<Material>;
@@ -35,7 +37,9 @@ export function material(params?: MaterialParams): Material {
     diffuse: params?.diffuse ?? 0.9,
     specular: params?.specular ?? 0.9,
     shininess: params?.shininess ?? 200.0,
-    reflective: params?.reflective ?? 0
+    reflective: params?.reflective ?? 0,
+    transparency: params?.transparency ?? 0,
+    refractiveIndex: params?.refractiveIndex ?? 1
   };
 }
 

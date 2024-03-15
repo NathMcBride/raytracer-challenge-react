@@ -17,7 +17,11 @@ import {
   translation,
   intersection,
   reflectedColor,
-  plane
+  refractedColor,
+  plane,
+  intersections,
+  glassSphere,
+  identity
 } from '..';
 
 describe('world', () => {
@@ -33,7 +37,7 @@ describe('world', () => {
   });
 
   describe('default world', () => {
-    const theWorld = defaultWorld();
+    const theWorld = defaultWorld('1234', '4321');
 
     it('contains the default light source', () => {
       const expectedLight = pointLight(point(-10, 10, -10), color(1, 1, 1));
@@ -42,13 +46,17 @@ describe('world', () => {
 
     it('contains the default objects', () => {
       const sphere1 = sphere({
+        uuid: '1234',
         material: material({
           color: color(0.8, 1.0, 0.6),
           diffuse: 0.7,
           specular: 0.2
         })
       });
-      const sphere2 = sphere({ transform: scaling(0.5, 0.5, 0.5) });
+      const sphere2 = sphere({
+        uuid: '4321',
+        transform: scaling(0.5, 0.5, 0.5)
+      });
 
       expect(theWorld.objects).toContainEqual(sphere1);
       expect(theWorld.objects).toContainEqual(sphere2);
@@ -112,6 +120,65 @@ describe('world', () => {
       const theColor = shadeHit(theWorld, comps, 1);
 
       expect(theColor).toApproxEqualColor(color(0.87675, 0.92434, 0.82917));
+    });
+
+    it('shades a transparent material', () => {
+      const theWorld = defaultWorld();
+      const floor = plane();
+      floor.transform = translation(0, -1, 0);
+      floor.material.transparency = 0.5;
+      floor.material.refractiveIndex = 1.5;
+      theWorld.objects.push(floor);
+
+      const ball = sphere();
+      ball.material.color = color(1, 0, 0);
+      ball.material.ambient = 0.5;
+      ball.transform = translation(0, -3.5, -0.5);
+      theWorld.objects.push(ball);
+
+      const r = ray(
+        point(0, 0, -3),
+        vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2)
+      );
+      const xs = intersections({
+        uuid: '1111',
+        t: Math.sqrt(2),
+        object: floor
+      });
+      const comps = prepareComputations(xs[0], r, xs);
+
+      const theColor = shadeHit(theWorld, comps, 5);
+      expect(theColor).toApproxEqualColor(color(0.93642, 0.68642, 0.68642));
+    });
+
+    it('shades a reflective and transparent material', () => {
+      const theWorld = defaultWorld();
+      const floor = plane();
+      floor.transform = translation(0, -1, 0);
+      floor.material.reflective = 0.5;
+      floor.material.transparency = 0.5;
+      floor.material.refractiveIndex = 1.5;
+      theWorld.objects.push(floor);
+
+      const ball = sphere();
+      ball.material.color = color(1, 0, 0);
+      ball.material.ambient = 0.5;
+      ball.transform = translation(0, -3.5, -0.5);
+      theWorld.objects.push(ball);
+
+      const r = ray(
+        point(0, 0, -3),
+        vector(0, -Math.sqrt(2) / 2, Math.sqrt(2) / 2)
+      );
+      const xs = intersections({
+        uuid: '1111',
+        t: Math.sqrt(2),
+        object: floor
+      });
+      const comps = prepareComputations(xs[0], r, xs);
+
+      const theColor = shadeHit(theWorld, comps, 5);
+      expect(theColor).toApproxEqualColor(color(0.93391, 0.69643, 0.69243));
     });
   });
 
@@ -266,6 +333,86 @@ describe('world', () => {
       const theColor = reflectedColor(theWorld, comps, 0);
 
       expect(theColor).toApproxEqualColor(color(0, 0, 0));
+    });
+  });
+
+  describe('refraction', () => {
+    it('calculates the refracted color of an opaque surface', () => {
+      const theWorld = defaultWorld();
+      const shape = theWorld.objects[0];
+
+      const r = ray(point(0, 0, -5), vector(0, 0, 1));
+      const xs = intersections(
+        { uuid: '1234', t: 4, object: shape },
+        { uuid: '4321', t: 6, object: shape }
+      );
+
+      const comps = prepareComputations(xs[0], r, xs);
+
+      const theColor = refractedColor(theWorld, comps, 5);
+      expect(theColor).toApproxEqualColor(color(0, 0, 0));
+    });
+
+    it('calculates the color at the maximum recursive depth', () => {
+      const theWorld = defaultWorld();
+      theWorld.objects[0].material.transparency = 1;
+      theWorld.objects[0].material.refractiveIndex = 1.5;
+      const shape = theWorld.objects[0];
+      const r = ray(point(0, 0, -5), vector(0, 0, 1));
+      const xs = intersections(
+        { uuid: '1234', t: 4, object: shape },
+        { uuid: '4321', t: 6, object: shape }
+      );
+
+      const comps = prepareComputations(xs[0], r, xs);
+
+      const theColor = refractedColor(theWorld, comps, 0);
+      expect(theColor).toApproxEqualColor(color(0, 0, 0));
+    });
+
+    it('calculates the color under total internal refraction', () => {
+      const theWorld = defaultWorld();
+      theWorld.objects[0].material.transparency = 1;
+      theWorld.objects[0].material.refractiveIndex = 1.5;
+      const shape = theWorld.objects[0];
+      const r = ray(point(0, 0, Math.sqrt(2) / 2), vector(0, 1, 0));
+      const xs = intersections(
+        { uuid: '1234', t: -Math.sqrt(2) / 2, object: shape },
+        { uuid: '4321', t: Math.sqrt(2) / 2, object: shape }
+      );
+
+      const comps = prepareComputations(xs[1], r, xs);
+
+      const theColor = refractedColor(theWorld, comps, 5);
+      expect(theColor).toApproxEqualColor(color(0, 0, 0));
+    });
+
+    it('calculates the refracted color with a refracted ray', () => {
+      const theWorld = defaultWorld();
+      theWorld.objects[0].material.ambient = 1;
+      theWorld.objects[0].material.pattern = {
+        kind: 'identity',
+        a: color(0, 0, 0),
+        b: color(0, 0, 0),
+        transform: identity()
+      };
+      theWorld.objects[1].material.transparency = 1;
+      theWorld.objects[1].material.refractiveIndex = 1.5;
+
+      const shapeA = theWorld.objects[0];
+      const shapeB = theWorld.objects[1];
+      const r = ray(point(0, 0, 0.1), vector(0, 1, 0));
+      const xs = intersections(
+        { uuid: '1234', t: -0.9899, object: shapeA },
+        { uuid: '12345', t: -0.4899, object: shapeB },
+        { uuid: '123456', t: 0.4899, object: shapeB },
+        { uuid: '1234567', t: 0.9899, object: shapeA }
+      );
+
+      const comps = prepareComputations(xs[2], r, xs);
+
+      const theColor = refractedColor(theWorld, comps, 5);
+      expect(theColor).toApproxEqualColor(color(0, 0.99887, 0.04721));
     });
   });
 });
